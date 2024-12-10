@@ -1,6 +1,6 @@
 # SeniorSignal #
 
-An app that aids in accessibility and convenience for the caretakers and the elderly.
+An app that aids in accessibility and convenience for caretakers and the elderly.
 
 ## Get started
 
