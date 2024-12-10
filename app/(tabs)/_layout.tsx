@@ -8,6 +8,8 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 import { AntDesign, Feather } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -38,14 +40,23 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="calendar"
         options={{
-          title: 'Explore',
+          title: 'Calendar',
           tabBarIcon: ({ color, size = 28 }) => (
-            <Feather name="compass" size={size} color={color} />
+            <Ionicons name="calendar-clear-outline" size={size} color={color} />
           ),
         }}
       />
+      <Tabs.Screen
+        name="alerts"
+        options={{
+          title: 'Alerts',
+          tabBarIcon: ({ color, size = 28 }) => (
+            <SimpleLineIcons name="bell" size={size} color={color} />
+          ),
+        }}
+      />    
       <Tabs.Screen
         name="settings"
         options={{
