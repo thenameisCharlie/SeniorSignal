@@ -23,6 +23,8 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  // TODO: Create a useEffect that will auto take the user to /login if they are not authenticated/logged in
+
   if (!loaded) {
     return null;
   }
@@ -30,6 +32,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
