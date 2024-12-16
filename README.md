@@ -16,7 +16,7 @@ An app that aids in accessibility and convenience for caretakers and the elderly
 3. Start the app
 
    ```bash
-    npx expo start
+    npx expo -c
    ```
 
 4. Viewing the app in Android, IOS, and/or Web \
