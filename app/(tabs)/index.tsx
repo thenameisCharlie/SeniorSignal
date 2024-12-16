@@ -9,11 +9,12 @@ import { useState, useEffect } from 'react';
 import  supabase from "@/lib/client";
 
 export default function HomeScreen() {
-    const [userData, setUserData] = useState(String);  
+    const [userData, setUserData] = useState(String); 
+    
 
     // A useEffect that will auto take the user to /login if they are not authenticated/logged in yet
     useEffect(() => {
-      fetchUser();
+      // fetchUser();
     }, []);
   
     async function fetchUser() {
