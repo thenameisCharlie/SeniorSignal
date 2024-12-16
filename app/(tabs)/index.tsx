@@ -13,7 +13,7 @@ export default function HomeScreen() {
 
     // A useEffect that will auto take the user to /login if they are not authenticated/logged in yet
     useEffect(() => {
-      fetchUser();
+      // fetchUser();
     }, []);
   
     async function fetchUser() {
