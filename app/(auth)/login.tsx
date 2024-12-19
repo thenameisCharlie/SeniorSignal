@@ -1,53 +1,129 @@
-import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity} from 'react-native';
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import { useState } from 'react';
+import {
+  Image,
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import { useState } from "react";
 
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState({ email: "", password: "" });
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isValid, setIsValid] = useState(true); //display when form is invalid
-  
+  // Regex for validating email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Function to handle form submission
   const handlePress = () => {
-
-    if(email === '' || password === '') {
-      setIsValid(false);
-      alert('Please fill in all fields');
+    if (validateForm()) {
+      console.log("Form Submitted Successfully!");
+    } else {
+      alert("Please fix the errors before submitting.");
     }
-    else {
-      console.log("Form Submitted Successfully!")
-    }
-
   };
 
-  return(
+  const validateForm = () => {
+    let newErrors = { email: "", password: "" };
+    let valid = true;
+
+    // Check if email is empty
+    if (!email.trim()) {
+      newErrors.email = "Email is required.";
+      valid = false;
+    } else if (!emailRegex.test(email)) {
+      // Validate email format
+      newErrors.email = "Invalid email address.";
+      valid = false;
+    }
+
+    // Check if password is empty
+    if (!password.trim()) {
+      newErrors.password = "Password is required.";
+      valid = false;
+    } else if (password.length < 20) {
+      // Validate password length
+      newErrors.password = "Password must be at least 20 characters.";
+      valid = false;
+    }
+
+    setError(newErrors); // Update error state
+    return valid; // Return the validation result
+  };
+
+  return (
     <View>
-      <TextInput value={email} onChangeText={setEmail} placeholder='Email' keyboardType='email-address' style={styles.container}/>
-      <TextInput value={password} onChangeText={setPassword} placeholder='Password' keyboardType='default' style={styles.container}/>
+      <TextInput
+        style={[styles.inputContainer, error.email && styles.inputError]}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="example@email.com"
+        placeholderTextColor={"grey"}
+        keyboardType="email-address"
+      />
+
+      {error.email && (
+        <Text style={styles.errorText}>This field is required*</Text>
+      )}
+
+      <TextInput
+        style={[styles.inputContainer, error.password && styles.inputError]}
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        placeholderTextColor={"grey"}
+        keyboardType="default"
+      />
+
+      {error.password && (
+        <Text style={styles.errorText}>This field is required*</Text>
+      )}
+
       <TouchableOpacity onPress={handlePress} style={styles.button}>
-        <Text>Login</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
-
-
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'lightblue',
+    backgroundColor: "lightblue",
     padding: 10,
     borderRadius: 5,
+    marginVertical: 20,
+    borderWidth: 1,
+    width: 80,
+    alignSelf: "center",
   },
-  container: {
+  buttonText: {
+    textAlign: "center",
+    fontWeight: "700",
+  },
+  inputContainer: {
     flex: 1,
     padding: 16,
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
-},
+    marginVertical: 10,
+    justifyContent: "center",
+    borderWidth: 1,
+    width: 400,
+    alignSelf: "center",
+  },
+  inputError: {
+    borderColor: "red", // Red border when invalid
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 0,
+    textAlign: "center",
+    marginRight: 285,
+  },
 });
