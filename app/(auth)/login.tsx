@@ -48,9 +48,9 @@ export default function Login() {
     if (!password.trim()) {
       newErrors.password = "Password is required.";
       valid = false;
-    } else if (password.length < 20) {
+    } else if (password.length < 6) {
       // Validate password length
-      newErrors.password = "Password must be at least 20 characters.";
+      newErrors.password = "Password must be at least  characters.";
       valid = false;
     }
 
@@ -70,7 +70,7 @@ export default function Login() {
       />
 
       {error.email && (
-        <Text style={styles.errorText}>This field is required*</Text>
+        <Text style={styles.errorText}>{error.email}</Text> // Show specific email error
       )}
 
       <TextInput
@@ -83,7 +83,7 @@ export default function Login() {
       />
 
       {error.password && (
-        <Text style={styles.errorText}>This field is required*</Text>
+        <Text style={styles.errorText}>{error.password}</Text> // Show specific password error
       )}
 
       <TouchableOpacity onPress={handlePress} style={styles.button}>
@@ -95,12 +95,12 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "lightblue",
+    backgroundColor: "#FFA07A",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     marginVertical: 20,
     borderWidth: 1,
-    width: 80,
+    width: 200,
     alignSelf: "center",
   },
   buttonText: {
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginVertical: 10,
+    borderRadius: 20,
     justifyContent: "center",
     borderWidth: 1,
     width: 400,
