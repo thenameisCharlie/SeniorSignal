@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -17,6 +18,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   // Regex for validating email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,6 +32,7 @@ export default function Login() {
     }
   };
 
+  // Function to validate form fields
   const validateForm = () => {
     let newErrors = { email: "", password: "" };
     let valid = true;
@@ -58,8 +61,13 @@ export default function Login() {
     return valid; // Return the validation result
   };
 
+  // Function to show/hide password
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <TextInput
         style={[styles.inputContainer, error.email && styles.inputError]}
         value={email}
@@ -79,7 +87,16 @@ export default function Login() {
         onChangeText={setPassword}
         placeholder="Password"
         placeholderTextColor={"grey"}
+        secureTextEntry={!showPassword} // Hide password
         keyboardType="default"
+      />
+
+      <MaterialCommunityIcons // Show/Hide password icon
+        name={showPassword ? "eye-off" : "eye"}
+        size={18}
+        color="#aaa"
+        style={styles.eyeIcon}
+        onPress={toggleShowPassword}
       />
 
       {error.password && (
@@ -101,21 +118,25 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderWidth: 1,
     width: 200,
-    alignSelf: "center",
   },
   buttonText: {
     textAlign: "center",
     fontWeight: "700",
   },
+  mainContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   inputContainer: {
+    flexDirection: "row",
     flex: 1,
-    padding: 16,
+    padding: 10,
     marginVertical: 10,
     borderRadius: 20,
+    borderColor: "grey",
     justifyContent: "center",
     borderWidth: 1,
     width: 400,
-    alignSelf: "center",
   },
   inputError: {
     borderColor: "red", // Red border when invalid
@@ -126,5 +147,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
     textAlign: "center",
     marginRight: 285,
+  },
+  eyeIcon: {
+    marginLeft: 340,
+    marginBottom: 20,
+    position: "absolute",
   },
 });
