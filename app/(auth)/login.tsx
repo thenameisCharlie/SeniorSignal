@@ -53,7 +53,7 @@ export default function Login() {
       valid = false;
     } else if (password.length < 6) {
       // Validate password length
-      newErrors.password = "Password must be at least  characters.";
+      newErrors.password = "Password must be at least 6 characters.";
       valid = false;
     }
 
@@ -76,13 +76,14 @@ export default function Login() {
         placeholderTextColor={"grey"}
         keyboardType="email-address"
       />
-
+      
       {error.email && (
         <Text style={styles.errorText}>{error.email}</Text> // Show specific email error
       )}
 
+    <View style={styles.inputContainer}>
       <TextInput
-        style={[styles.inputContainer, error.password && styles.inputError]}
+        style={[styles.passwordInput, error.password && styles.inputError]}
         value={password}
         onChangeText={setPassword}
         placeholder="Password"
@@ -98,6 +99,7 @@ export default function Login() {
         style={styles.eyeIcon}
         onPress={toggleShowPassword}
       />
+    </View>
 
       {error.password && (
         <Text style={styles.errorText}>{error.password}</Text> // Show specific password error
@@ -129,15 +131,24 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    flex: 1,
-    padding: 10,
+    alignItems: "center",
+    paddingHorizontal: 10,
     marginVertical: 10,
     borderRadius: 20,
     borderColor: "grey",
-    justifyContent: "center",
     borderWidth: 1,
     width: 400,
+    height: 50, // Consistent height for input container
+    backgroundColor: "white", // Optional for better contrast
   },
+  passwordInput: {
+    flex: 1, // Allow TextInput to take up remaining space
+    borderRadius: 20,
+    height: 50, 
+    paddingHorizontal: 10, // Padding for the TextInput
+    
+  },
+
   inputError: {
     borderColor: "red", // Red border when invalid
   },
@@ -149,8 +160,7 @@ const styles = StyleSheet.create({
     marginRight: 285,
   },
   eyeIcon: {
-    marginLeft: 340,
-    marginBottom: 20,
-    position: "absolute",
+    marginLeft: 10,
+    
   },
 });
