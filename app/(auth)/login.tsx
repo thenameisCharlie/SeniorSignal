@@ -9,6 +9,7 @@ import {
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
+import  supabase from "@/lib/client";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
@@ -19,6 +20,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   // Regex for validating email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
