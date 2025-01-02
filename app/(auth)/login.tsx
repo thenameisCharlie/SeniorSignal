@@ -48,6 +48,7 @@ export default function Login() {
     }
 
     // Check if password is empty
+    //.trim() removes whitespace from both ends of a string
     if (!password.trim()) {
       newErrors.password = "Password is required.";
       valid = false;
