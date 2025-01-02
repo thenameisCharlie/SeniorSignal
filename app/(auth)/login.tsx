@@ -9,6 +9,7 @@ import {
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
+import  supabase from "@/lib/client";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
@@ -19,6 +20,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   // Regex for validating email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,17 +56,12 @@ export default function Login() {
       valid = false;
     } else if (password.length < 6) {
       // Validate password length
-      newErrors.password = "Password must be at least  characters.";
+      newErrors.password = "Password must be at least 6 characters.";
       valid = false;
     }
 
     setError(newErrors); // Update error state
     return valid; // Return the validation result
-  };
-
-  // Function to show/hide password
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
@@ -77,27 +74,19 @@ export default function Login() {
         placeholderTextColor={"grey"}
         keyboardType="email-address"
       />
-
+      
       {error.email && (
         <Text style={styles.errorText}>{error.email}</Text> // Show specific email error
       )}
 
       <TextInput
-        style={[styles.inputContainer, error.password && styles.inputError]}
+        style={[styles.passwordInput, error.password && styles.inputError]}
         value={password}
         onChangeText={setPassword}
         placeholder="Password"
         placeholderTextColor={"grey"}
         secureTextEntry={!showPassword} // Hide password
         keyboardType="default"
-      />
-
-      <MaterialCommunityIcons // Show/Hide password icon
-        name={showPassword ? "eye-off" : "eye"}
-        size={18}
-        color="#aaa"
-        style={styles.eyeIcon}
-        onPress={toggleShowPassword}
       />
 
       {error.password && (
@@ -130,14 +119,27 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    flex: 1,
-    padding: 10,
+    alignItems: "center",
+    paddingHorizontal: 10,
     marginVertical: 10,
     borderRadius: 20,
     borderColor: "grey",
-    justifyContent: "center",
     borderWidth: 1,
     width: 400,
+    height: 50, // Consistent height for input container
+    backgroundColor: "white", // Optional for better contrast
+  },
+  passwordInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    borderRadius: 20,
+    borderColor: "grey",
+    borderWidth: 1,
+    width: 400,
+    height: 50, // Consistent height for input container
+    backgroundColor: "white", // Optional for better contrast
   },
   inputError: {
     borderColor: "red", // Red border when invalid
@@ -150,8 +152,6 @@ const styles = StyleSheet.create({
     marginRight: 285,
   },
   eyeIcon: {
-    marginLeft: 340,
-    marginBottom: 20,
-    position: "absolute",
+    marginLeft: 10,
   },
 });
