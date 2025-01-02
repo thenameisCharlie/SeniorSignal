@@ -83,11 +83,6 @@ export default function Signup() {
     return valid; // Return the validation result
   };
 
-  // Function to show/hide password
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   const handleSignUp = async () => {
     const { data, error } = await supabase.auth.signUp({
       email: email,
@@ -126,14 +121,6 @@ export default function Signup() {
         placeholderTextColor={"grey"}
         secureTextEntry={!showPassword} // Hide password
         keyboardType="default"
-      />
-
-      <MaterialCommunityIcons // Show/Hide password icon
-        name={showPassword ? "eye-off" : "eye"}
-        size={18}
-        color="#aaa"
-        style={styles.eyeIcon}
-        onPress={toggleShowPassword}
       />
     </View>
 

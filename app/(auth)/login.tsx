@@ -63,11 +63,6 @@ export default function Login() {
     return valid; // Return the validation result
   };
 
-  // Function to show/hide password
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <View style={styles.mainContainer}>
       <TextInput
@@ -83,7 +78,6 @@ export default function Login() {
         <Text style={styles.errorText}>{error.email}</Text> // Show specific email error
       )}
 
-    <View style={styles.inputContainer}>
       <TextInput
         style={[styles.passwordInput, error.password && styles.inputError]}
         value={password}
@@ -93,15 +87,6 @@ export default function Login() {
         secureTextEntry={!showPassword} // Hide password
         keyboardType="default"
       />
-
-      <MaterialCommunityIcons // Show/Hide password icon
-        name={showPassword ? "eye-off" : "eye"}
-        size={18}
-        color="#aaa"
-        style={styles.eyeIcon}
-        onPress={toggleShowPassword}
-      />
-    </View>
 
       {error.password && (
         <Text style={styles.errorText}>{error.password}</Text> // Show specific password error
@@ -144,13 +129,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white", // Optional for better contrast
   },
   passwordInput: {
-    flex: 1, // Allow TextInput to take up remaining space
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    marginVertical: 10,
     borderRadius: 20,
-    height: 50, 
-    paddingHorizontal: 10, // Padding for the TextInput
-    
+    borderColor: "grey",
+    borderWidth: 1,
+    width: 400,
+    height: 50, // Consistent height for input container
+    backgroundColor: "white", // Optional for better contrast
   },
-
   inputError: {
     borderColor: "red", // Red border when invalid
   },
@@ -163,6 +152,5 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     marginLeft: 10,
-    
   },
 });
