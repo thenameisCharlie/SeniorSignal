@@ -7,24 +7,43 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useState, useEffect } from "react";
 import supabase from "@/lib/client";
-import { Link } from "expo-router";
 
-export default function Login() {
+export default function Forgotpassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<string | null>(null);
 
   // Regex for validating email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  useEffect(() => {
+    // If user is already logged in, redirect to main page
+    fetchUserData();
+  });
+
+  const fetchUserData = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) {
+      setUserData(user.id);
+    }
+
+    if (userData) {
+      window.location.href = "/";
+    }
+  };
+
   // Function to handle form submission
   const handlePress = () => {
     if (validateForm()) {
-      alert("Form Submitted Successfully!");
+      handleSignUp();
+      console.log("Form Submitted Successfully!");
     } else {
       alert("Please fix the errors before submitting.");
     }
@@ -46,7 +65,6 @@ export default function Login() {
     }
 
     // Check if password is empty
-    //.trim() removes whitespace from both ends of a string
     if (!password.trim()) {
       newErrors.password = "Password is required.";
       valid = false;
@@ -56,8 +74,22 @@ export default function Login() {
       valid = false;
     }
 
-    setError(newErrors); // Update error state
+    // setError(newErrors); // Update error state
     return valid; // Return the validation result
+  };
+
+  const handleSignUp = async () => {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+    if (error) {
+      alert("Error signing up: " + error.message);
+    } else {
+      alert(
+        "Sign up successful! Please check your email to verify your account."
+      );
+    }
   };
 
   return (
@@ -75,28 +107,24 @@ export default function Login() {
         <Text style={styles.errorText}>{error.email}</Text> // Show specific email error
       )}
 
-      <TextInput
-        style={[styles.passwordInput, error.password && styles.inputError]}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        placeholderTextColor={"grey"}
-        secureTextEntry={!showPassword} // Hide password
-        keyboardType="default"
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[styles.passwordInput, error.password && styles.inputError]}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          placeholderTextColor={"grey"}
+          secureTextEntry={!showPassword} // Hide password
+          keyboardType="default"
+        />
+      </View>
 
       {error.password && (
         <Text style={styles.errorText}>{error.password}</Text> // Show specific password error
       )}
 
-      <TouchableOpacity>
-        <Link href="/forgotpassword">
-          <Text style={styles.passwordText}>Forgot Password?</Text>
-        </Link>
-      </TouchableOpacity>
-
       <TouchableOpacity onPress={handlePress} style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Signup</Text>
       </TouchableOpacity>
     </View>
   );
@@ -132,17 +160,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white", // Optional for better contrast
   },
   passwordInput: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    marginVertical: 10,
+    flex: 1, // Allow TextInput to take up remaining space
     borderRadius: 20,
-    borderColor: "grey",
-    borderWidth: 1,
-    width: 400,
-    height: 50, // Consistent height for input container
-    backgroundColor: "white", // Optional for better contrast
+    height: 50,
+    paddingHorizontal: 10, // Padding for the TextInput
   },
+
   inputError: {
     borderColor: "red", // Red border when invalid
   },
@@ -155,10 +178,5 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     marginLeft: 10,
-  },
-  passwordText: {
-    textAlign: "left",
-    marginLeft: 260,
-    color: "#0000EE",
   },
 });

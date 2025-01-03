@@ -9,12 +9,7 @@ import {
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
-import  supabase from "@/lib/client";
-
-
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import supabase from "@/lib/client";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -79,7 +74,7 @@ export default function Signup() {
       valid = false;
     }
 
-   // setError(newErrors); // Update error state
+    // setError(newErrors); // Update error state
     return valid; // Return the validation result
   };
 
@@ -90,12 +85,12 @@ export default function Signup() {
     });
     if (error) {
       alert("Error signing up: " + error.message);
-    }
-    else {
-      alert("Sign up successful! Please check your email to verify your account.");
+    } else {
+      alert(
+        "Sign up successful! Please check your email to verify your account."
+      );
     }
   };
-
 
   return (
     <View style={styles.mainContainer}>
@@ -107,22 +102,22 @@ export default function Signup() {
         placeholderTextColor={"grey"}
         keyboardType="email-address"
       />
-      
+
       {error.email && (
         <Text style={styles.errorText}>{error.email}</Text> // Show specific email error
       )}
 
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={[styles.passwordInput, error.password && styles.inputError]}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        placeholderTextColor={"grey"}
-        secureTextEntry={!showPassword} // Hide password
-        keyboardType="default"
-      />
-    </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[styles.passwordInput, error.password && styles.inputError]}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          placeholderTextColor={"grey"}
+          secureTextEntry={!showPassword} // Hide password
+          keyboardType="default"
+        />
+      </View>
 
       {error.password && (
         <Text style={styles.errorText}>{error.password}</Text> // Show specific password error
@@ -167,9 +162,8 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1, // Allow TextInput to take up remaining space
     borderRadius: 20,
-    height: 50, 
+    height: 50,
     paddingHorizontal: 10, // Padding for the TextInput
-    
   },
 
   inputError: {
@@ -184,6 +178,5 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     marginLeft: 10,
-    
   },
 });
