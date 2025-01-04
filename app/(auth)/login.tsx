@@ -91,13 +91,15 @@
 
         <TouchableOpacity>
           <Link href="/(auth)/forgotpassword">
-            <Text style={styles.passwordText}>Forgot Password?</Text>
+            <Text style={styles.forgotpasswordText}>Forgot Password?</Text>
           </Link>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handlePress} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
+
+        <Text>Don't have an account? <Link style={styles.signupText} href={"/(auth)/signup"}>Sign up</Link></Text>
       </View>
     );
   }
@@ -116,8 +118,10 @@
       fontWeight: "700",
     },
     mainContainer: {
+      flex: 1, 
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor: "#FFFFF0"
     },
     inputContainer: {
       flexDirection: "row",
@@ -156,9 +160,12 @@
     eyeIcon: {
       marginLeft: 10,
     },
-    passwordText: {
+    forgotpasswordText: {
       textAlign: "left",
       marginLeft: 260,
+      color: "#0000EE",
+    },
+    signupText: {
       color: "#0000EE",
     },
   });
