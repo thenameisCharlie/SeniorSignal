@@ -14,12 +14,16 @@ import supabase from "@/lib/client";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState({ email: "", password: "" });
+  const [userFirstName, setUserFirstName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [error, setError] = useState({ email: "", password: "", userFirstName: "", userLastName: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [userData, setUserData] = useState<string | null>(null);
+    //const [userId, setUserId] = useState("");
 
   // Regex for validating email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 
   useEffect(() => {
     // If user is already logged in, redirect to main page
@@ -42,16 +46,14 @@ export default function Signup() {
   // Function to handle form submission
   const handlePress = () => {
     if (validateForm()) {
-      handleSignUp();
-      console.log("Form Submitted Successfully!");
-    } else {
-      alert("Please fix the errors before submitting.");
-    }
+      handleSignUp(); 
+      alert("Form Submitted Successfully!");
+      }
   };
 
   // Function to validate form fields
   const validateForm = () => {
-    let newErrors = { email: "", password: "" };
+    let newErrors = { email: "", password: "", userFirstName: "", userLastName: "" };
     let valid = true;
 
     // Check if email is empty
@@ -73,11 +75,24 @@ export default function Signup() {
       newErrors.password = "Password must be at least 6 characters.";
       valid = false;
     }
+    
+    // Check if first name is empty
+    if (!userFirstName.trim()) {
+      newErrors.userFirstName = "First name is required.";
+      valid = false;
+    }
 
-    // setError(newErrors); // Update error state
+    // Check if last name is empty
+    if (!userLastName.trim()) {
+      newErrors.userLastName = "Last name is required.";
+      valid = false;
+    }
+
+    setError(newErrors); // Update error state
     return valid; // Return the validation result
   };
 
+  //function to handle sign up
   const handleSignUp = async () => {
     const { data, error } = await supabase.auth.signUp({
       email: email,
@@ -88,12 +103,54 @@ export default function Signup() {
     } else {
       alert(
         "Sign up successful! Please check your email to verify your account."
-      );
+      );  
     }
   };
 
+  ////function to handle user names and insert in the user profiles table. Figure out how to link id with the UUID of the user
+  // const handleUserNames = async () => {
+  //   const {data, error} = await supabase.from('user profiles').insert({
+  //     id: userId,
+  //     first_name: userFirstName,
+  //     last_name: userLastName
+  //   });
+  //   if (error) {
+  //     alert("Error signing up: " + error.message);
+  //   } else {
+  //     alert(
+  //       "User names added successfully!"
+  //     );
+  //   }
+  // }
+
   return (
     <View style={styles.mainContainer}>
+      <TextInput
+        style={[styles.inputContainer, error.userFirstName && styles.inputError]} //&& is a logical operator that returns the right-hand operand if the left-hand operand is true
+        value={userFirstName}
+        onChangeText={setUserFirstName}
+        placeholder="First Name"
+        placeholderTextColor={"grey"}
+        keyboardType="default"
+      />
+
+      {error.userFirstName && (
+        <Text style={styles.errorText}>{error.userFirstName}</Text> // Show specific first name error
+      )}
+
+      <TextInput 
+        style={[styles.inputContainer, error.userLastName && styles.inputError]}
+        value={userLastName}
+        onChangeText={setUserLastName}
+        placeholder="Last Name"
+        placeholderTextColor={"grey"}
+        keyboardType="default"
+      />
+
+      {error.userFirstName && (
+        <Text style={styles.errorText}>{error.userFirstName}</Text> // Show specific first name error
+      )}
+
       <TextInput
         style={[styles.inputContainer, error.email && styles.inputError]}
         value={email}
@@ -124,7 +181,7 @@ export default function Signup() {
       )}
 
       <TouchableOpacity onPress={handlePress} style={styles.button}>
-        <Text style={styles.buttonText}>Signup</Text>
+        <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -144,6 +201,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   mainContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
